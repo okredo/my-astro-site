@@ -1,0 +1,33 @@
+---
+let query = `{
+      boards(ids: 3149893794) {
+        id
+        name
+        items(limit: 100) {
+          id
+          name
+          column_values {            
+            id            
+            text
+          }
+        }
+      }
+    }`;
+
+const response = await fetch("https://api.monday.com/v2", {
+  method: "post",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: process.env.REACT_APP_MONDAY_SECRET,
+  },
+  body: JSON.stringify({
+    query: query,
+  }),
+});
+
+const json = await response.json();
+const weather = JSON.stringify(json.data);
+---
+
+<!-- <h1>Fetching Weather at build time</h1> -->
+<p>{weather}</p>
