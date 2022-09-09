@@ -27,7 +27,30 @@ const response = await fetch("https://api.monday.com/v2", {
 
 const json = await response.json();
 const weather = JSON.stringify(json.data);
+const Contacts = json.data?.boards[0]?.items;
+const columns = Contacts?.map((c) => ({
+  name: c.name,
+  data: c.column_values.map(({ id, text }) => ({ [id]: text })),
+}));
 ---
 
-<!-- <h1>Fetching Weather at build time</h1> -->
-<p>{weather}</p>
+<table class="table-auto m-32">
+  <thead>
+    <tr>
+      <th>Account</th>
+      <th>Name</th>
+      <th>Title</th>
+      <th>Email</th>
+      <th>Phone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{columns[1].data[1].contact_account}</td>
+      <td>{columns[1]?.name}</td>
+      <td>{columns[1].data[3].title5}</td>
+      <td>{columns[1].data[6].contact_email}</td>
+      <td>{columns[1].data[5].contact_phone}</td>
+    </tr>
+  </tbody>
+</table>
